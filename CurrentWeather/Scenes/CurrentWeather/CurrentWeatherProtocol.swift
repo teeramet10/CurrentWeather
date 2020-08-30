@@ -7,24 +7,26 @@
 //
 
 import Foundation
-protocol CurrentWeatherControllerProtocol {
-    func displayWeather(_ viewModel : CountryWeatherViewModel)
-    func convertWeatherSuccess(_ temperature : String)
+protocol CurrentWeatherControllerProtocol : class{
+    func displayWeather(_ viewModel : CurrentWeather.FetchWeather.ViewModel)
+    func showAlert(_ message : String)
+    func displayConvertWeather(_ viewModel : CurrentWeather.ConvertWeather.ViewModel)
 }
 
 
-protocol CurrentWeatherPresenterProtocol{
+protocol CurrentWeatherPresenterProtocol : class{
     func showError(_ error :Error)
-    func showWeather(_ response : CountryWeatherModel)
-    func showConvertWeather()
+    func showWeather(_ response : CurrentWeather.FetchWeather.Response)
+    func showConvertWeather(response : CurrentWeather.ConvertWeather.Response)
 }
 
-protocol CurrentWeatherInteractorProtocol{
-    func getCurrentWeather(_ cityName :String , _ unit :String)
+protocol CurrentWeatherInteractorProtocol : class{
+    func getCurrentWeather(request : CurrentWeather.FetchWeather.Request)
     func convertToFahrenheit()
     func convertToCelsius()
 }
 
-protocol CurrentWeatherRoutingProtocol {
-    func routeToForeCast(_ cityName : String)
+protocol CurrentWeatherRoutingProtocol : class{
+    func routeToForeCast(_ cityName : String,  _ unit:String)
+    
 }

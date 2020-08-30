@@ -31,8 +31,11 @@ class ForeCastTableViewCell: UITableViewCell {
         container.layer.cornerRadius = 20
     }
     
-    func setCell(){
-        
+    func setCell( _ data : ForeCastWeatherViewModel){
+        ImageUtils.loader(tempImageView, data.icon)
+        tempLabel.text = data.temperature
+        mainLabel.text = data.title
+        descriptionLabel.text = data.description
     }
 
     

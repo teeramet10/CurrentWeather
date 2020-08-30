@@ -7,3 +7,16 @@
 //
 
 import Foundation
+class ForeCastWeatherViewModel {
+    var temperature : String = ""
+    var description : String = ""
+    var icon :String = ""
+    var title :String = ""
+    
+    init(title :String, temperature : String , description: String , icon :String ) {
+        self.temperature = temperature
+        self.title = title
+        self.description = description
+        self.icon = icon
+    }
+}

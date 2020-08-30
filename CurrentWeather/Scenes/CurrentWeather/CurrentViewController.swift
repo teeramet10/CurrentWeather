@@ -13,8 +13,9 @@ enum Units : String{
     case Imperial = "imperial" //Fahrenheit
 }
 
-class CurrentWeatherController: UIViewController {
-
+class CurrentWeatherController: BaseViewController {
+    
+    static let identifier = "CurrentWeatherController"
     
     @IBOutlet weak var weatherImageView: UIImageView!
     @IBOutlet weak var cityTextfield: UITextField!
@@ -31,18 +32,28 @@ class CurrentWeatherController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-       
-        setup()
-        setupUI()
+        
+        fetchWeather()
     }
     
-    private func setupUI(){
+    func fetchWeather(){
+        let request = CurrentWeather.FetchWeather.Request(cityName: "Bangkok", units: unit.rawValue)
+        self.interactor?.getCurrentWeather(request: request)
+    }
+    
+    override func setupUI(){
         title = "Weather"
-        container.layer.cornerRadius = 20
-        self.interactor?.getCurrentWeather("Bangkok", unit.rawValue)
+       
+        weatherImageView.layer.cornerRadius = 75
+        setButton()
     }
     
-    private func setup(){
+    func setButton(){
+        let units = unit == .Metric ? "Fahrenheit" : "Celsius"
+        convertTempButton.setTitle("  Convert to \(units)", for: .normal)
+    }
+    
+    override func setup(){
         let presenter = CurrentWeatherPresenter()
         let interactor = CurrentWeatherInteractor()
         let router = CurrentWeatherRouter()
@@ -51,12 +62,12 @@ class CurrentWeatherController: UIViewController {
         interactor.presenter = presenter
         interactor.weatherRepository = WeatherRepository(APIWeatherDataSource())
         self.interactor = interactor
-      
+        
         self.router = router
     }
-
+    
     @IBAction func toForeCastPage(_ sender: Any) {
-        self.router?.routeToForeCast(cityTextfield.text ?? "")
+        self.router?.routeToForeCast(cityTextfield.text ?? "",unit.rawValue)
     }
     
     
@@ -69,27 +80,33 @@ class CurrentWeatherController: UIViewController {
             unit = .Imperial
             self.interactor?.convertToFahrenheit()
         }
-       
+        setButton()
+        
     }
     
     @IBAction func onEnterCity(_ sender: Any) {
-        self.interactor?.getCurrentWeather(cityTextfield.text ?? "",unit.rawValue)
+        let request = CurrentWeather.FetchWeather.Request(cityName: cityTextfield.text ?? "", units: unit.rawValue)
+        self.interactor?.getCurrentWeather(request: request)
     }
     
 }
 
 
 extension CurrentWeatherController : CurrentWeatherControllerProtocol{
-    func displayWeather(_ viewModel : CountryWeatherViewModel) {
-        cityTextfield.text = viewModel.city
-        humidityLabel.text = viewModel.humidity
-        temperatureLabel.text = viewModel.temp
-        ImageUtils.loader( weatherImageView, viewModel.icon)
+    func displayWeather(_ viewModel: CurrentWeather.FetchWeather.ViewModel) {
+        let weather = viewModel.weather
+        cityTextfield.text = weather.city
+        humidityLabel.text = weather.humidity
+        temperatureLabel.text = weather.temp
+        ImageUtils.loader( weatherImageView, weather.icon)
     }
     
-    func convertWeatherSuccess(_ temperature : String) {
-        temperatureLabel.text = temperature
+    func showAlert(_ message: String) {
+        displayAlert(message)
     }
     
+    func displayConvertWeather(_ viewModel : CurrentWeather.ConvertWeather.ViewModel){
+        temperatureLabel.text = viewModel.temperatureText
+    }
     
 }

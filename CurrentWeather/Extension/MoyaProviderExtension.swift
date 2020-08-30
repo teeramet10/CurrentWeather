@@ -9,23 +9,24 @@
 import Foundation
 import Moya
 import RxSwift
+import Moya_ObjectMapper
 
 extension MoyaProvider{
     
-    func requestAPI<E:BaseResponse>( _ target : Target) -> Observable<E>{
+    
+    func requestAPI<Element:BaseResponse>( _ target : Target) -> Observable<Element>{
         let request = self.rx.request(target).debug()
-        return request
-            .flatMap({response in
+        return request.flatMap({response in
                 guard (200...299).contains(response.statusCode) else {
                     do{
-                        let response = try response.map(E.self)
+                        let response = try response.mapObject(Element.self)
                         throw ResponseError(response.message ?? "")
                     }
                 }
                 return .just(response)
             })
-            .filterSuccessfulStatusCodes()
-            .map(E.self, atKeyPath: nil, using: JSONDecoder.init(), failsOnEmptyData: true).asObservable()
+            .filterSuccessfulStatusCodes().mapObject(Element.self).asObservable()
+
         
     }
 }

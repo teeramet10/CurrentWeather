@@ -7,20 +7,21 @@
 //
 
 import Foundation
-protocol ForeCastInteractorProtocol {
-    func fetchForeCast(_ cityName :String , _ unit:String)
+protocol ForeCastInteractorProtocol : class {
+    func fetchForeCast(request : ForeCast.FetchForeCast.Request)
 }
 
-protocol ForeCastPresenterProtocol {
-    func showForeCastList(_ response : ForeCastWeatherListModel)
+protocol ForeCastPresenterProtocol : class {
+    func showForeCastList(response : ForeCast.FetchForeCast.Response)
     func showError(_ error : Error)
 }
 
 
-protocol ForCastRoutingProtocol {
+protocol ForeCastRoutingProtocol : class{
     
 }
 
-protocol ForeCastViewControllerProtocol {
-    func showForecastList( _ list : [ForeCastGroupViewModel])
+protocol ForeCastViewControllerProtocol :class {
+    func showForecastList(viewModel : ForeCast.FetchForeCast.ViewModel)
+    func showAlert(_ message : String)
 }

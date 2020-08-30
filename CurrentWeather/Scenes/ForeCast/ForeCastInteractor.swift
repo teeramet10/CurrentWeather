@@ -16,11 +16,14 @@ class ForeCastInteractor : ForeCastInteractorProtocol{
     
     var disposeBag = DisposeBag()
     
-    
-    func fetchForeCast(_ cityName: String , _ unit:String) {
-        weatherRepository?.getForeCastWeathre(cityName,unit).bind().subscribe(onNext: {[weak self]response in
+    func fetchForeCast(request :ForeCast.FetchForeCast.Request) {
+        weatherRepository?.getForeCastWeathre(request.cityName,request.unit).bind().subscribe(onNext: {[weak self]data in
+          
             guard let strongSelf = self else{return}
-            strongSelf.presenter?.showForeCastList(response)
+            
+            let response = ForeCast.FetchForeCast.Response(foreCastModel: data)
+            strongSelf.presenter?.showForeCastList(response: response)
+            
             }, onError: {[weak self] error in
                 guard let strongSelf = self else{return}
                 strongSelf.presenter?.showError(error)

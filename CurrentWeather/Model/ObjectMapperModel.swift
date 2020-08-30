@@ -7,3 +7,18 @@
 //
 
 import Foundation
+import ObjectMapper
+class ObjectMapperModel: Mappable {
+    
+    init() {
+        
+    }
+    
+    required init?(map: Map) {
+        
+    }
+    
+    func mapping(map: Map) {
+        
+    }
+}

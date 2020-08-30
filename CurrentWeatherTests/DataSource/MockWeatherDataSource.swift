@@ -8,6 +8,7 @@
 
 import Foundation
 import RxSwift
+@testable import CurrentWeather
 class MockWeatherDataSource : WeatherDataSourceProtocol{
     
     
@@ -25,7 +26,6 @@ class MockWeatherDataSource : WeatherDataSourceProtocol{
             let model : CountryWeatherModel = CountryWeatherModel.init(JSONString: MockGetWeatherCityJSONResponse.jsonFailed) ??  CountryWeatherModel()
             return Observable.error(ResponseError.init(model.message))
         }
-        
     }
     
     func getForeCastWeather(_ cityName: String, unit: String) -> Observable<ForeCastWeatherListModel> {
@@ -33,12 +33,11 @@ class MockWeatherDataSource : WeatherDataSourceProtocol{
         if success {
             let model : ForeCastWeatherListModel = ForeCastWeatherListModel.init(JSONString: MockGetForeCastWeatherJSONResponse.jsonSuccess) ?? ForeCastWeatherListModel()
             return Observable.just(model)
-            
+
         }else{
             let model : ForeCastWeatherListModel = ForeCastWeatherListModel.init(JSONString: MockGetForeCastWeatherJSONResponse.jsonFailed) ?? ForeCastWeatherListModel()
-            return Observable.just(model)
+            return Observable.error(ResponseError.init(model.message))
         }
-        
         
     }
     

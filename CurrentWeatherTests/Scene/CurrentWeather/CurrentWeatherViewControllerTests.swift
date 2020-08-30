@@ -64,4 +64,67 @@ class CurrentWeatherViewControllerTests: XCTestCase{
         XCTAssertEqual(displayWeather, "50")
     }
     
+    func test_enterCity(){
+        loadView()
+        let interactor =  MockCurrentWeatherInteractor()
+        viewController.interactor = interactor
+        
+        viewController.onEnterCity(UIButton())
+        
+        XCTAssertTrue(interactor.getCurrentWeatherCalled)
+        XCTAssertFalse(interactor.convertToFahrenheitCalled)
+        XCTAssertFalse(interactor.convetToCelsiusCalled)
+    }
+    
+    func test_convertFahrenheitSuccess(){
+        loadView()
+        let interactor =  MockCurrentWeatherInteractor()
+        viewController.interactor = interactor
+        viewController.unit = .Metric
+        viewController.onConvertTemp(UIButton())
+        
+        XCTAssertTrue(interactor.convertToFahrenheitCalled)
+        XCTAssertFalse(interactor.convetToCelsiusCalled)
+        XCTAssertFalse(interactor.getCurrentWeatherCalled)
+    }
+    
+    func test_convertFahrenheitFailed(){
+        loadView()
+        let interactor =  MockCurrentWeatherInteractor()
+        viewController.interactor = interactor
+        viewController.unit = .Imperial
+        viewController.onConvertTemp(UIButton())
+        
+        XCTAssertFalse(interactor.convertToFahrenheitCalled)
+        XCTAssertTrue(interactor.convetToCelsiusCalled)
+        XCTAssertFalse(interactor.getCurrentWeatherCalled)
+        
+    }
+    
+    func test_convertCelsiusSuccess(){
+        loadView()
+        let interactor =  MockCurrentWeatherInteractor()
+        viewController.interactor = interactor
+        viewController.unit = .Imperial
+        viewController.onConvertTemp(UIButton())
+        
+        XCTAssertFalse(interactor.convertToFahrenheitCalled)
+        XCTAssertTrue(interactor.convetToCelsiusCalled)
+        XCTAssertFalse(interactor.getCurrentWeatherCalled)
+    }
+    
+    func test_convertCelsiusFailed(){
+        loadView()
+        let interactor =  MockCurrentWeatherInteractor()
+        viewController.interactor = interactor
+        viewController.unit = .Metric
+        viewController.onConvertTemp(UIButton())
+        
+        XCTAssertTrue(interactor.convertToFahrenheitCalled)
+        XCTAssertFalse(interactor.convetToCelsiusCalled)
+        XCTAssertFalse(interactor.getCurrentWeatherCalled)
+        
+    }
+    
+    
 }

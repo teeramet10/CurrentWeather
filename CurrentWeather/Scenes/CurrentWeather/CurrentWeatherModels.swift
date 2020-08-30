@@ -7,3 +7,36 @@
 //
 
 import Foundation
+
+enum CurrentWeather{
+    
+    enum FetchWeather{
+        struct Request {
+            var cityName :String
+            var units : String
+        }
+        
+        struct Response {
+            var weather : CountryWeatherModel?
+        }
+        
+        struct ViewModel {
+             var weather : CountryWeatherViewModel
+        }
+    }
+    
+    enum ConvertWeather{
+        struct Request {
+            
+        }
+        
+        struct Response {
+            var temperature : Float
+            var unit : Units
+        }
+        
+        struct ViewModel {
+            var temperatureText : String
+        }
+    }
+}

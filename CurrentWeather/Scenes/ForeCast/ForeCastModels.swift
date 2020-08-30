@@ -7,3 +7,21 @@
 //
 
 import Foundation
+
+enum ForeCast{
+    
+    enum FetchForeCast{
+        struct Request {
+            var cityName :String
+            var unit :String
+        }
+        
+        struct Response {
+            var foreCastModel : ForeCastWeatherListModel?
+        }
+        
+        struct ViewModel {
+            var displayList : [ForeCastGroupViewModel]
+        }
+    }
+}

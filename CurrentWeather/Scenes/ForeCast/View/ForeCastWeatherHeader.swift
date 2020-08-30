@@ -8,8 +8,8 @@
 
 import UIKit
 
-class ForCastWeathreHeader: UIView {
+class ForeCastWeatherHeader: BaseView {
 
-  
+    @IBOutlet weak var titleLabel :UILabel!
 
 }

@@ -7,3 +7,12 @@
 //
 
 import Foundation
+import Kingfisher
+class ImageUtils{
+    
+    
+    static func loader(_ imageView : UIImageView , _ path :String){
+        guard let url = URL(string: path) else{return}
+        imageView.kf.setImage(with: url)
+    }
+}

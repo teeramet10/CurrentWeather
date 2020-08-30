@@ -7,27 +7,22 @@
 //
 
 import Foundation
-class CountryWeatherModel : Codable{
-    var weather : WeatherModel?
+import ObjectMapper
+class CountryWeatherModel : BaseResponse{
+    var weather : [WeatherModel] = []
     var main : TemperatureModel?
-    var cod: Int?
-    var message : String?
-}
-
-
-class WeatherModel : Codable{
-    var id : Int?
-    var main : String?
-    var description: String?
-    var icon: String?
+    var name : String?
+    var unit :String?
     
-}
+    override func mapping(map:Map) {
+        super.mapping(map: map)
+        self.weather <- map["weather"]
+        self.main <- map["main"]
+        self.name <- map["name"]
+        self.unit <- map["unit"]
+    }
+    
 
-class TemperatureModel : Codable{
-    var temp: Float?
-    var feels_like: Float?
-    var temp_min: Float?
-    var temp_max: Float?
-    var pressure: Float?
-    var humidity: Int?
+    
+    
 }

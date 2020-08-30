@@ -7,3 +7,8 @@
 //
 
 import Foundation
+class ForeCastGroupViewModel {
+    var list : [ForeCastWeatherViewModel] = []
+    var date : String = ""
+}
+

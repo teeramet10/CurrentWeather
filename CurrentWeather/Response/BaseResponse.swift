@@ -7,3 +7,15 @@
 //
 
 import Foundation
+import ObjectMapper
+class BaseResponse : ObjectMapperModel{
+    var cod: Int?
+    var message : String?
+    
+    
+    override func mapping(map:Map) {
+        self.cod <- map["cod"]
+        self.message <- map["message"]
+        
+    }
+}

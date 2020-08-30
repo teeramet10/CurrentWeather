@@ -11,23 +11,45 @@ import Foundation
 
 class CurrentWeatherPresenter : CurrentWeatherPresenterProtocol{
     
-    var viewController :  CurrentWeatherControllerProtocol? 
+    weak var viewController :  CurrentWeatherControllerProtocol? 
     
     
     func showError(_ error: Error) {
-        
+        let message = ResponseError.getError(error: error)
+        viewController?.showAlert(message)
     }
     
-    func showWeather(_ response: CountryWeatherModel) {
-        let city = response.name ?? ""
-        let icon = "http://openweathermap.org/img/wn/\(response.weather.first?.icon ?? "")@2x.png"
-        let temp = String(response.main?.temp ?? 0)
-        let humidity = String(response.main?.humidity ?? 0)
-        let viewModel = CountryWeatherViewModel(city: city, icon: icon, temp: temp, humidity: humidity)
+    func showWeather(_ response: CurrentWeather.FetchWeather.Response) {
+        guard let data = response.weather else{
+            viewController?.showAlert(response.weather?.message ?? "")
+            return
+        }
+        
+        guard data.cod == 200 else{
+            viewController?.showAlert(response.weather?.message ?? "")
+            return
+        }
+        
+        let city = data.name ?? ""
+        let icon = "http://openweathermap.org/img/wn/\(data.weather.first?.icon ?? "")@2x.png"
+        let unit = data.unit == Units.Metric.rawValue ? "°C": "°F"
+        
+        let temp = "\(data.main?.temp ?? 0) \(unit)"
+        let humidity = String(data.main?.humidity ?? 0)
+        
+        let model = CountryWeatherViewModel(city: city, icon: icon, temp: temp, humidity: humidity)
+        
+        let viewModel = CurrentWeather.FetchWeather.ViewModel(weather: model)
         viewController?.displayWeather(viewModel)
     }
     
-    func showConvertWeather() {
+    func showConvertWeather(response : CurrentWeather.ConvertWeather.Response) {
+        let unit = response.unit
+        let temperature = response.temperature
         
+        let unitText = unit.rawValue == Units.Metric.rawValue ? "°C": "°F"
+        let temp = "\(String(format:"%.2f",temperature)) \(unitText)"
+        let viewModel = CurrentWeather.ConvertWeather.ViewModel(temperatureText:temp )
+        viewController?.displayConvertWeather(viewModel)
     }
 }

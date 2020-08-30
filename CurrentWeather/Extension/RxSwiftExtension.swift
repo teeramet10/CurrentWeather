@@ -7,3 +7,9 @@
 //
 
 import Foundation
+import RxSwift
+extension Observable{
+     func bind() -> Observable<Element>{
+          return self.subscribeOn(ConcurrentDispatchQueueScheduler.init(qos: .background)).observeOn(MainScheduler.instance)
+      }
+}

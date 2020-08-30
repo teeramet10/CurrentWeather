@@ -7,7 +7,11 @@
 //
 
 import Foundation
-
-protocol WeatherRepositoryProtocol {
+import RxSwift
+protocol WeatherRepositoryProtocol  : class{
     
+    func getWeather(_ cityName: String , _ unit : String)  -> Observable<CountryWeatherModel>
+    
+    func getForeCastWeathre(_ cityName :String ,_  unit: String) -> Observable<ForeCastWeatherListModel>
+         
 }

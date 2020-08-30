@@ -7,7 +7,7 @@
 //
 
 import Foundation
-
-class ForeCastRouter : ForCastRoutingProtocol{
-    
+import  UIKit
+class ForeCastRouter : ForeCastRoutingProtocol{
+    weak var viewController : UIViewController?
 }
