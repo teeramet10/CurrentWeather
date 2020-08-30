@@ -15,7 +15,7 @@ class CurrentWeatherRouter : CurrentWeatherRoutingProtocol{
     
     func routeToForeCast(_ cityName : String , _ unit:String) {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        guard let vc = storyboard.instantiateViewController(identifier: ForeCastViewController.identifier) as? ForeCastViewController else{return}
+        guard let vc = storyboard.instantiateViewController(withIdentifier: ForeCastViewController.identifier) as? ForeCastViewController else{return}
         vc.cityName = cityName
         vc.unit = unit
         viewController?.navigationController?.pushViewController(vc, animated: true)
