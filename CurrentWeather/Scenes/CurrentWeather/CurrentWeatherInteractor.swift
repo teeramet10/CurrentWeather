@@ -14,27 +14,29 @@ import RxSwift
 class CurrentWeatherInteractor  : CurrentWeatherInteractorProtocol{
     
     var presenter : CurrentWeatherPresenterProtocol?
-    
-    var weatherRepository : WeatherRepositoryProtocol?
+        
+    var workers : CurrentWeatherWorkerProtocol?
     
     var disposeBag = DisposeBag()
     
     var tempurature : Float = 0
     
     func getCurrentWeather(request: CurrentWeather.FetchWeather.Request) {
-        weatherRepository?.getWeather(request.cityName,request.units).bind().subscribe(onNext: {[weak self] data in
+        workers?.getCurrentWeather(request.cityName, request.units, completionHandler: {[weak self](data , error) in
             
             guard let strongSelf = self else{return}
             
-            strongSelf.tempurature = data.main?.temp ?? 0
+            guard error == nil else{
+                strongSelf.presenter?.showError(error ?? ResponseError.init("Can't get weather"))
+                return
+            }
+            
+            strongSelf.tempurature = data?.main?.temp ?? 0
             let response = CurrentWeather.FetchWeather.Response(weather: data)
             strongSelf.presenter?.showWeather(response)
-            
-            }, onError: {[weak self] error in
-                guard let strongSelf = self else{return}
-                strongSelf.presenter?.showError(error)
-            }, onCompleted: nil, onDisposed: nil)
-            .disposed(by: disposeBag)
+        })
+        
+        
     }
     
     //[°C] × 9 / 5 + 32

@@ -30,3 +30,8 @@ protocol CurrentWeatherRoutingProtocol : class{
     func routeToForeCast(_ cityName : String,  _ unit:String)
     
 }
+
+
+protocol CurrentWeatherWorkerProtocol : class{
+    func getCurrentWeather(_ cityName : String,  _ unit:String , completionHandler:@escaping (CountryWeatherModel?,Error?) -> Void)
+}

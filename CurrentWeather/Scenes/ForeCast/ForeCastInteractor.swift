@@ -12,23 +12,22 @@ import RxSwift
 class ForeCastInteractor : ForeCastInteractorProtocol{
     var presenter : ForeCastPresenterProtocol?
     
-    var weatherRepository : WeatherRepositoryProtocol?
-    
-    var disposeBag = DisposeBag()
-    
+    var worker : ForeCastWorkerProtocol?
+   
     func fetchForeCast(request :ForeCast.FetchForeCast.Request) {
-        weatherRepository?.getForeCastWeathre(request.cityName,request.unit).bind().subscribe(onNext: {[weak self]data in
-          
+        worker?.fetchForeCast(request.cityName,request.unit , completionHandler: {[weak self](data , error) in
+            
             guard let strongSelf = self else{return}
+            
+            guard error == nil else{
+                strongSelf.presenter?.showError(error ?? ResponseError.init("Can't get forecast."))
+                return
+            }
             
             let response = ForeCast.FetchForeCast.Response(foreCastModel: data)
             strongSelf.presenter?.showForeCastList(response: response)
             
-            }, onError: {[weak self] error in
-                guard let strongSelf = self else{return}
-                strongSelf.presenter?.showError(error)
-            }, onCompleted: nil, onDisposed: nil)
-            .disposed(by: disposeBag)
+        })
     }
     
     

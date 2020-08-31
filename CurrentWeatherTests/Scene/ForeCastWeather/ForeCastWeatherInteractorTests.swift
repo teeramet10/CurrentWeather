@@ -17,7 +17,7 @@ class ForeCastWeatherInteractorTests : XCTestCase{
         
         let interactor = ForeCastInteractor()
         interactor.presenter = presenter
-        interactor.weatherRepository =  WeatherRepository(MockWeatherDataSource(success: true))
+        interactor.worker =  ForeCastWorker(MockWeatherDataSource(success: true))
       
         let request = ForeCast.FetchForeCast.Request(cityName: "Bangkok", unit: Units.Metric.rawValue)
         interactor.fetchForeCast(request: request)
@@ -36,7 +36,7 @@ class ForeCastWeatherInteractorTests : XCTestCase{
         
         let interactor = ForeCastInteractor()
         interactor.presenter = presenter
-        interactor.weatherRepository =  WeatherRepository(MockWeatherDataSource(success: false))
+        interactor.worker =  ForeCastWorker(MockWeatherDataSource(success: false))
         
         let request = ForeCast.FetchForeCast.Request(cityName: "", unit: Units.Metric.rawValue)
         interactor.fetchForeCast(request: request)
@@ -47,4 +47,6 @@ class ForeCastWeatherInteractorTests : XCTestCase{
         XCTAssertFalse(presenter.showForeCastListCalled)
         
     }
+    
+    
 }

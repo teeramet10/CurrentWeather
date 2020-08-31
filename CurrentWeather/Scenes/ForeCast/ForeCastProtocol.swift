@@ -25,3 +25,8 @@ protocol ForeCastViewControllerProtocol :class {
     func showForecastList(viewModel : ForeCast.FetchForeCast.ViewModel)
     func showAlert(_ message : String)
 }
+
+protocol ForeCastWorkerProtocol : class {
+    func fetchForeCast(_ cityName : String,  _ unit:String , completionHandler:@escaping (ForeCastWeatherListModel?,Error?) -> Void)
+    
+}

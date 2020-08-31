@@ -24,7 +24,7 @@ class CurrentWeatherInteractorTests : XCTestCase{
         
         let interactor = CurrentWeatherInteractor()
         interactor.presenter = presenter
-        interactor.weatherRepository =  WeatherRepository(MockWeatherDataSource(success: true))
+        interactor.workers =  CurrentWeatherWorker(MockWeatherDataSource(success: true))
       
         let request = CurrentWeather.FetchWeather.Request(cityName: "Bangkok", units: Units.Metric.rawValue)
         interactor.getCurrentWeather(request: request)
@@ -44,7 +44,7 @@ class CurrentWeatherInteractorTests : XCTestCase{
         
         let interactor = CurrentWeatherInteractor()
         interactor.presenter = presenter
-        interactor.weatherRepository =  WeatherRepository(MockWeatherDataSource.init(success: false))
+        interactor.workers =  CurrentWeatherWorker(MockWeatherDataSource.init(success: false))
         let request = CurrentWeather.FetchWeather.Request(cityName: "", units: Units.Metric.rawValue)
         interactor.getCurrentWeather(request: request)
         
@@ -64,7 +64,7 @@ class CurrentWeatherInteractorTests : XCTestCase{
         let interactor = CurrentWeatherInteractor()
         interactor.tempurature = 30.6
         interactor.presenter = presenter
-        interactor.weatherRepository =  WeatherRepository(MockWeatherDataSource.init(success: false))
+        interactor.workers =  CurrentWeatherWorker(MockWeatherDataSource.init(success: false))
         interactor.convertToFahrenheit()
                 
         XCTAssertTrue(presenter.showConvertWeatherCalled)
@@ -81,7 +81,7 @@ class CurrentWeatherInteractorTests : XCTestCase{
         let interactor = CurrentWeatherInteractor()
         interactor.tempurature = 122
         interactor.presenter = presenter
-        interactor.weatherRepository =  WeatherRepository(MockWeatherDataSource.init(success: false))
+        interactor.workers =  CurrentWeatherWorker(MockWeatherDataSource.init(success: false))
         interactor.convertToCelsius()
                 
         XCTAssertTrue(presenter.showConvertWeatherCalled)

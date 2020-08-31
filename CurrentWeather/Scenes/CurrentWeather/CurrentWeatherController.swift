@@ -43,7 +43,7 @@ class CurrentWeatherController: BaseViewController {
     
     override func setupUI(){
         title = "Weather"
-       
+        cityTextfield.delegate = self
         weatherImageView.layer.cornerRadius = 75
         setButton()
     }
@@ -60,7 +60,7 @@ class CurrentWeatherController: BaseViewController {
         router.viewController = self
         presenter.viewController = self
         interactor.presenter = presenter
-        interactor.weatherRepository = WeatherRepository(APIWeatherDataSource())
+        interactor.workers = CurrentWeatherWorker(APIWeatherDataSource())
         self.interactor = interactor
         
         self.router = router
@@ -85,10 +85,18 @@ class CurrentWeatherController: BaseViewController {
     }
     
     @IBAction func onEnterCity(_ sender: Any) {
+        view.endEditing(true)
         let request = CurrentWeather.FetchWeather.Request(cityName: cityTextfield.text ?? "", units: unit.rawValue)
         self.interactor?.getCurrentWeather(request: request)
     }
     
+}
+
+extension CurrentWeatherController : UITextFieldDelegate{
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        view.endEditing(true)
+        return true
+    }
 }
 
 

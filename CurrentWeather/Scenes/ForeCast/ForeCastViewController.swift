@@ -44,7 +44,7 @@ class ForeCastViewController: BaseViewController {
         router.viewController = self
         presenter.viewController = self
         interactor.presenter = presenter
-        interactor.weatherRepository = WeatherRepository(APIWeatherDataSource())
+        interactor.worker = ForeCastWorker(APIWeatherDataSource())
         self.interactor = interactor
         self.router = router
     }
