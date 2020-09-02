@@ -4,5 +4,5 @@ os: osx
 xcode_project: CurrentWeather.xcodeproj
 xcode_scheme: CurrentWeatherTests
 xcode_destination: platform=iOS Simulator,OS=13.6,name=iPhone 11
-script:
+before_install:
   pod install
