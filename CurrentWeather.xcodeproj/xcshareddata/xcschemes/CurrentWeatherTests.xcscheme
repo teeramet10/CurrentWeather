@@ -35,6 +35,16 @@
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
       allowLocationSimulation = "YES">
+      <BuildableProductRunnable
+         runnableDebuggingMode = "0">
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "8AF1634624F9719E0021E1D7"
+            BuildableName = "CurrentWeather.app"
+            BlueprintName = "CurrentWeather"
+            ReferencedContainer = "container:CurrentWeather.xcodeproj">
+         </BuildableReference>
+      </BuildableProductRunnable>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"
